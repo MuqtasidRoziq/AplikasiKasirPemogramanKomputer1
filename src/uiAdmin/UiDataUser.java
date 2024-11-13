@@ -7,10 +7,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import kasirapk.connectData;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import logging.logging.ActivityLogger;
 
 /**
  *
@@ -18,10 +20,12 @@ import javax.swing.event.ListSelectionListener;
  */
 public class UiDataUser extends javax.swing.JInternalFrame {
 
+    private String userName;
     /**
      * Creates new form UiDataUser
      */
-    public UiDataUser() {
+    public UiDataUser(String userName) {
+        this.userName = userName; // autentikasi user login
         initComponents();
         loadDataUser();
         
@@ -44,6 +48,11 @@ public class UiDataUser extends javax.swing.JInternalFrame {
             }
         });
     }
+
+    UiDataUser() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,14 +192,15 @@ public class UiDataUser extends javax.swing.JInternalFrame {
                 // Tambahkan data ke model tabel
                 model.addRow(new Object[]{idUser, nama, email, role, username, password});
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     private void btnTambahuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahuserActionPerformed
         // TODO add your handling code here:
-        UiInsertUser insertuser = new UiInsertUser();
+        UiInsertUser insertuser = new UiInsertUser(userName);
         insertuser.setVisible(true);
+        loadDataUser();
     }//GEN-LAST:event_btnTambahuserActionPerformed
 
     private void btnEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUserActionPerformed
@@ -205,8 +215,9 @@ public class UiDataUser extends javax.swing.JInternalFrame {
             String password = TabUser.getValueAt(selectedRow, 5).toString();
 
             // Buka form edit dengan data pengguna yang dipilih
-            UiEditData editUserForm = new UiEditData(idUser, nama, email, role, username, password);
+            UiEditData editUserForm = new UiEditData(idUser, nama, email, role, username, password, userName);
             editUserForm.setVisible(true);
+            loadDataUser();
         }
 
     }//GEN-LAST:event_btnEditUserActionPerformed
@@ -225,9 +236,11 @@ public class UiDataUser extends javax.swing.JInternalFrame {
                     String deleteQuery = "DELETE FROM tb_user WHERE id_user = '" + idUser + "'";
                     st.executeUpdate(deleteQuery);
                     loadDataUser(); // Muat ulang data setelah penghapusan
+                    ActivityLogger.logDeleteUser(this.userName, idUser);
                     JOptionPane.showMessageDialog(this, "Data user berhasil dihapus.");
                 } catch (Exception e) {
                     e.printStackTrace();
+                    ActivityLogger.logError(this.userName + " eror dalam menghapus data ");
                     JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data.");
                 }
             }
@@ -260,6 +273,8 @@ public class UiDataUser extends javax.swing.JInternalFrame {
                 String username = rs.getString("username_user");
                 String password = rs.getString("password_user");
 
+//                logging Activity
+                ActivityLogger.logSearching(this.userName, idUser);
                 // Tambahkan data ke model tabel
                 model.addRow(new Object[]{idUser, nama, email, role, username, password});
             }
@@ -267,10 +282,12 @@ public class UiDataUser extends javax.swing.JInternalFrame {
             // Pesan jika tidak ada data ditemukan
             if (model.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Data user tidak ditemukan.", "Pencarian", JOptionPane.INFORMATION_MESSAGE);
+                ActivityLogger.logError(this.userName + "tidak menemukan id atau user yang di cari");
             }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data.");
+            ActivityLogger.logError(this.userName + " Melakukan kesalahan dalam mencari data");
         }
     }//GEN-LAST:event_btnCariUserActionPerformed
 

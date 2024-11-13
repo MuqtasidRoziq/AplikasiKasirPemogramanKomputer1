@@ -9,21 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import kasirapk.connectData;
-
+import logging.logging.ActivityLogger;
 /**
  *
  * @author muqta
  */
 public class UiInsertUser extends javax.swing.JFrame {
 
+    private String userName;
+
     /**
      * Creates new form UiInsertUser
      */
 
     
-    public UiInsertUser() {
+    public UiInsertUser(String userName) {
         initComponents();
+        this.userName = userName; // autentikasi user login
     }
+
+    private UiInsertUser() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -190,6 +198,7 @@ public class UiInsertUser extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+//    fungsi add user
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here        
         // Mengambil data dari field input
@@ -226,6 +235,8 @@ public class UiInsertUser extends javax.swing.JFrame {
             int rowsInserted = pst.executeUpdate();
 
             if (rowsInserted > 0) {
+                //              logging activity
+                ActivityLogger.logInsertUser(this.userName, IdUser);
                 JOptionPane.showMessageDialog(this, "User berhasil ditambahkan!");
                 // Kosongkan field setelah data berhasil disimpan
                 InputIDUser.setText("");
@@ -235,10 +246,10 @@ public class UiInsertUser extends javax.swing.JFrame {
                 InputUsername.setText("");
                 InputPassword.setText("");
             }
-            
-            this.dispose(); // Tutup form setelah menyimpan
+            this.dispose();
         
         } catch (SQLException e) {
+            ActivityLogger.logError( this.userName + " eror saat menambahkan user");
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -276,6 +287,7 @@ public class UiInsertUser extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new UiInsertUser().setVisible(true);
             }
@@ -300,4 +312,6 @@ public class UiInsertUser extends javax.swing.JFrame {
     private javax.swing.JLabel lbRole;
     private javax.swing.JLabel lbUsername;
     // End of variables declaration//GEN-END:variables
+
+
 }

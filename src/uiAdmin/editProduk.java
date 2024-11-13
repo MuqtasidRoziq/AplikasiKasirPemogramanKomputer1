@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import kasirapk.connectData;
+import logging.logging.ActivityLogger;
 
 /**
  *
@@ -16,11 +17,13 @@ import kasirapk.connectData;
  */
 public class editProduk extends javax.swing.JFrame {
     private String idProduk;
+    private String userName;
     /**
      * Creates new form editProduk
      */
-    public editProduk(String idProduk, String namaProduk, String hargaBeli, String hargaJual, String stok, String satuan) {
+    public editProduk(String idProduk, String namaProduk, String hargaBeli, String hargaJual, String stok, String satuan, String userName) {
         initComponents();
+        this.userName = userName;
         
                 // Simpan ID pengguna dan data lainnya
         this.idProduk = idProduk;
@@ -246,18 +249,19 @@ public class editProduk extends javax.swing.JFrame {
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
+                ActivityLogger.logEditProduk(this.userName, IDProdukLama);
                 JOptionPane.showMessageDialog(this, "Data produk berhasil diperbarui.");
             } else {
+                ActivityLogger.logError(this.userName + " gagal memperbarui data");
                 JOptionPane.showMessageDialog(this, "Data produk gagal diperbarui.");
             }
 
             // Kembali ke tampilan data user
-            UiDataUser dataUserForm = new UiDataUser();
-            dataUserForm.setVisible(true);
             this.dispose();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            ActivityLogger.logError(this.userName + " mengalami kesalahan saat memperbarui data");
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memperbarui data.");
         }
     }//GEN-LAST:event_btnSaveActionPerformed

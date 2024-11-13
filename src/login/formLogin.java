@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import kasirapk.connectData;
+import logging.logging.ActivityLogger;
 
 public class formLogin extends javax.swing.JFrame {
     Connection conn; // Tambahkan variable untuk menyimpan koneksi
@@ -159,19 +160,24 @@ public class formLogin extends javax.swing.JFrame {
 
                 if (role.equalsIgnoreCase("admin")) {
                     JOptionPane.showMessageDialog(null, "Anda berhasil login sebagai Admin!");
+                    
+                    ActivityLogger.logLogin(username);
                     // Membuat instance ProfileAdmin dan menambahkannya ke JDesktopPane di uiAdmin
                     uiAdmin mainAdmin = new uiAdmin();
                     mainAdmin.setUser(userId, nama, email, role, userName, Password); // Pass user data
                     mainAdmin.setVisible(true);
-                    this.dispose(); // Close the login form
+                    this.dispose(); // Close 1the login form
                 } else {
                     JOptionPane.showMessageDialog(null, "Role tidak dikenal!");
+                    ActivityLogger.logError("User " + username + " gagal melakukan login karena tidak diketahui role nya.");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Username atau password salah!");
+                ActivityLogger.logError("User " + username + " gagal melaakukan login karena salah memasukan username/password.");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            ActivityLogger.logError("Kesalahan login pada user " + username + ": " + e.getMessage());
         }
     }
 

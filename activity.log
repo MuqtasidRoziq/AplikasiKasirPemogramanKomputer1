@@ -1,0 +1,30 @@
+Nov 13, 2024 3:18:18 PM logging.logging$ActivityLogger logLogin
+INFO: admin2 berhasil melakukan login.
+Nov 13, 2024 3:21:21 PM logging.logging$ActivityLogger logSearchProduk
+INFO: admin2 mencari produk dengan id produk: 2401
+Nov 13, 2024 3:23:40 PM logging.logging$ActivityLogger logInsertProduk
+INFO: admin2telah menambahkan produk dengan id: 12403
+Nov 13, 2024 3:24:34 PM logging.logging$ActivityLogger logEditProduk
+INFO: admin2telah mengedit data di dalam id produk: 2401
+Nov 13, 2024 3:25:21 PM logging.logging$ActivityLogger logDeleteProduk
+INFO: admin2telah menghapus produk dengan id: 12403
+Nov 13, 2024 3:32:28 PM logging.logging$ActivityLogger logLogin
+INFO: admin1 berhasil melakukan login.
+Nov 13, 2024 3:33:27 PM logging.logging$ActivityLogger logDeleteUser
+INFO: admin1 telah menghapus id: 22404
+Nov 13, 2024 3:33:40 PM logging.logging$ActivityLogger logLogout
+INFO: admin1 telah melakukan loggout.
+Nov 13, 2024 5:03:00 PM logging.logging$ActivityLogger logLogin
+INFO: admin2 berhasil melakukan login.
+Nov 13, 2024 5:04:55 PM logging.logging$ActivityLogger logLogin
+INFO: admin3 berhasil melakukan login.
+Nov 13, 2024 5:05:31 PM logging.logging$ActivityLogger logError
+SEVERE: Error: terjadi kesalahan saat memperbarui data 
+Nov 13, 2024 5:05:58 PM logging.logging$ActivityLogger logEditUser
+INFO: admin3 telah mengedit data di dalam id user: 12402
+Nov 13, 2024 5:06:18 PM logging.logging$ActivityLogger logDeleteUser
+INFO: admin3 telah menghapus id: 12402
+Nov 13, 2024 5:07:06 PM logging.logging$ActivityLogger logInsertUser
+INFO: admin3 menambahkan id: 12
+Nov 13, 2024 5:08:07 PM logging.logging$ActivityLogger logLogout
+INFO: admin3 telah melakukan loggout.

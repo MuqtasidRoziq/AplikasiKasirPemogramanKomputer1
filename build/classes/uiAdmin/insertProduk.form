@@ -132,7 +132,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Tambah User"/>
+            <Property name="text" type="java.lang.String" value="Tambah Produk"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -184,11 +184,10 @@
     <Component class="javax.swing.JComboBox" name="SelectSatuan">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="- pilih role anda -"/>
-            <StringItem index="1" value="owner"/>
-            <StringItem index="2" value="admin"/>
-            <StringItem index="3" value="kasir"/>
+          <StringArray count="3">
+            <StringItem index="0" value="- pilih satuan -"/>
+            <StringItem index="1" value="Pcs"/>
+            <StringItem index="2" value="Kg"/>
           </StringArray>
         </Property>
       </Properties>

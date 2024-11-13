@@ -9,17 +9,23 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import kasirapk.connectData;
+import logging.logging.ActivityLogger;
 /**
  *
  * @author muqta
  */
 public class insertProduk extends javax.swing.JFrame {
-
+    private String userName;
     /**
      * Creates new form insertProduk
      */
-    public insertProduk() {
+    public insertProduk(String userName) {
+        this.userName = userName;
         initComponents();
+    }
+
+    private insertProduk() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -53,7 +59,7 @@ public class insertProduk extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Tambah User");
+        jLabel1.setText("Tambah Produk");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -95,7 +101,7 @@ public class insertProduk extends javax.swing.JFrame {
         hargaBeli.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         hargaBeli.setText("Harga Beli");
 
-        SelectSatuan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- pilih role anda -", "owner", "admin", "kasir" }));
+        SelectSatuan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- pilih satuan -", "Pcs", "Kg" }));
         SelectSatuan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SelectSatuanActionPerformed(evt);
@@ -218,6 +224,7 @@ public class insertProduk extends javax.swing.JFrame {
             int rowsInserted = pst.executeUpdate();
 
             if (rowsInserted > 0) {
+                ActivityLogger.logInsertProduk(this.userName, IdProduk);
                 JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan!");
                 // Kosongkan field setelah data berhasil disimpan
                 InputIDProduk.setText("");
@@ -273,6 +280,7 @@ public class insertProduk extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new insertProduk().setVisible(true);
             }

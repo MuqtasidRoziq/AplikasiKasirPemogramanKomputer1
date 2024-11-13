@@ -4,6 +4,7 @@
  */
 package uiAdmin;
 import login.formLogin;
+import logging.logging.ActivityLogger;
 
  
 public class uiAdmin extends javax.swing.JFrame {
@@ -162,15 +163,17 @@ public class uiAdmin extends javax.swing.JFrame {
         mainDekstop.removeAll();
         mainDekstop.revalidate();
         mainDekstop.repaint();
-        UiDataUser datauser = new UiDataUser();
+        UiDataUser datauser = new UiDataUser(userName);
         mainDekstop.add(datauser).setVisible(true);
     }//GEN-LAST:event_btnDataUserActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
         formLogin login = new formLogin();
+        ActivityLogger.logLogout(userName);
         login.setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_btnLogOutActionPerformed
     
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
@@ -188,7 +191,7 @@ public class uiAdmin extends javax.swing.JFrame {
         mainDekstop.removeAll();
         mainDekstop.revalidate();
         mainDekstop.repaint();
-        DataProduk viewproduk = new DataProduk();
+        DataProduk viewproduk = new DataProduk(userName);
         mainDekstop.add(viewproduk).setVisible(true);
     }//GEN-LAST:event_btnDataProdukActionPerformed
 
@@ -228,6 +231,7 @@ public class uiAdmin extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new uiAdmin().setVisible(true);
             }

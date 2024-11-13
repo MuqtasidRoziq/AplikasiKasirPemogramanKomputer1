@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import kasirapk.connectData;
+import logging.logging.ActivityLogger;
 
 
 /**
@@ -20,14 +21,15 @@ public class UiEditData extends javax.swing.JFrame {
      * Creates new form UiEditData
      */
     private String idUser;
-
+    private String userName;
     
-    public UiEditData(String idUser, String nama, String email, String role, String username, String password) {
+    public UiEditData(String idUser, String nama, String email, String role, String username, String password, String userName) {
         initComponents();
         
                 
         // Simpan ID pengguna dan data lainnya
         this.idUser = idUser;
+        this.userName = userName;
         
         
         // Isi field dengan data pengguna
@@ -239,26 +241,23 @@ public class UiEditData extends javax.swing.JFrame {
 
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
+                ActivityLogger.logEditUser(this.userName, IDUserLama); //logging Activity
                 JOptionPane.showMessageDialog(this, "Data user berhasil diperbarui.");
             } else {
+                ActivityLogger.logError(this.userName + " gagal memperbarui data");
                 JOptionPane.showMessageDialog(this, "Data user gagal diperbarui.");
             }
-
-            // Kembali ke tampilan data user
-            UiDataUser dataUserForm = new UiDataUser();
-            dataUserForm.setVisible(true);
             this.dispose();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            ActivityLogger.logError("terjadi kesalahan saat memperbarui data ");
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memperbarui data.");
         }
     }//GEN-LAST:event_saveActionPerformed
     
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         // TODO add your handling code here:
-        UiDataUser datauser = new UiDataUser();
-        datauser.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelActionPerformed
 

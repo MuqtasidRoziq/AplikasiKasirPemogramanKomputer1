@@ -11,19 +11,25 @@ import java.sql.Statement;
 import kasirapk.connectData;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import logging.logging.ActivityLogger;
 
 /**
  *
  * @author muqta
  */
 public class DataProduk extends javax.swing.JInternalFrame {
-
+    private String userName;
     /**
      * Creates new form DataProduk
      */
-    public DataProduk() {
+    public DataProduk(String userName) {
+        this.userName = userName;
         initComponents();
         ViewProduk();
+        
+        // Menonaktifkan tombol Edit dan Delete saat pertama kali dibuka
+        btnEditProduk.setEnabled(false);
+        btnHapusProduk.setEnabled(false);
         
         // Menambahkan ListSelectionListener ke tabel
         TabProduk.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -183,26 +189,23 @@ public class DataProduk extends javax.swing.JInternalFrame {
     
     private void btnTambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahProdukActionPerformed
         // TODO add your handling code here:
-        insertProduk insert = new insertProduk();
+        insertProduk insert = new insertProduk(userName);
         insert.setVisible(true);
     }//GEN-LAST:event_btnTambahProdukActionPerformed
 
     private void btnEditProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProdukActionPerformed
         int selectedRow = TabProduk.getSelectedRow();
         if (selectedRow != -1) {
-            try {
-                String idProduk = TabProduk.getValueAt(selectedRow, 0).toString();
-                String namaProduk = TabProduk.getValueAt(selectedRow, 1).toString();
-                String hargaBeli = TabProduk.getValueAt(selectedRow, 2).toString();
-                String hargaJual = TabProduk.getValueAt(selectedRow, 3).toString();
-                String stok = TabProduk.getValueAt(selectedRow, 4).toString();
-                String satuan = TabProduk.getValueAt(selectedRow, 5).toString();
+            String idProduk = TabProduk.getValueAt(selectedRow, 0).toString();
+            String namaProduk = TabProduk.getValueAt(selectedRow, 1).toString();
+            String hargaBeli = TabProduk.getValueAt(selectedRow, 2).toString();
+            String hargaJual = TabProduk.getValueAt(selectedRow, 3).toString();
+            String stok = TabProduk.getValueAt(selectedRow, 4).toString();
+            String satuan = TabProduk.getValueAt(selectedRow, 5).toString();
+            
+            editProduk editProdukForm = new editProduk(idProduk, namaProduk, hargaBeli, hargaJual, stok, satuan, userName);
+            editProdukForm.setVisible(true);
 
-                editProduk editProdukForm = new editProduk(idProduk, namaProduk, hargaBeli, hargaJual, stok, satuan);
-                editProdukForm.setVisible(true);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                JOptionPane.showMessageDialog(this, "Kolom data produk tidak lengkap.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }//GEN-LAST:event_btnEditProdukActionPerformed
 
@@ -220,10 +223,12 @@ public class DataProduk extends javax.swing.JInternalFrame {
                     String deleteQuery = "DELETE FROM tb_produk WHERE id_produk = '" + idProduk + "'";
                     st.executeUpdate(deleteQuery);
                     ViewProduk(); // Muat ulang data setelah penghapusan
+                    ActivityLogger.logDeleteProduk(this.userName, idProduk);
                     JOptionPane.showMessageDialog(this, "Data produk berhasil dihapus.");
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data.");
+                    ActivityLogger.logError(this.userName + " gagal menghapus produk");
                 }
             }
         }
@@ -256,14 +261,17 @@ public class DataProduk extends javax.swing.JInternalFrame {
 
                 // Tambahkan data ke model tabel
                 model.addRow(new Object[]{idProduk, namaProduk, hargaBeli, hargaJual, stok, satuan});
+                ActivityLogger.logSearchProduk(this.userName, idProduk);
             }
 
             // Pesan jika tidak ada data ditemukan
             if (model.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Data user tidak ditemukan.", "Pencarian", JOptionPane.INFORMATION_MESSAGE);
+                ActivityLogger.logError(this.userName + " tidak menemukan produk yang di cari");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data.");
+            ActivityLogger.logError(this.userName + " mengalami kesalahan dalam mencari data");
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnCariUserActionPerformed
